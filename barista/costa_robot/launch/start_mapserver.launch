@@ -1,0 +1,12 @@
+<launch>
+
+
+  <!-- Save Current Map -->
+  <arg name="map_name" default="barista_map"/>
+
+  <node pkg="map_server" type="map_server"
+      name="map_server_node"
+      args="-f $(find costa_robot)/map/generated/$(arg map_name).yaml">
+  </node>
+
+</launch>

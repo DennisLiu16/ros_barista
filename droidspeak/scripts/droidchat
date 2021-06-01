@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+import rospy
+import sys
+import pygame
+import time
+import os
+import rospkg
+import random
+
+from droidspeak.msg import *
+from std_msgs.msg import UInt8
+from droidspeak.srv import *
+
+letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+message_length = [1,2,3]
+
+def callback(data):
+
+    if data.data == DroidEmotionRequest.NORMAL:
+        sample = random.choice(letters)
+    elif data.data == DroidEmotionRequest.BLINK:
+        sample = 'n'
+    else:
+        length = random.choice(message_length)
+        sample = random.sample(letters, length)
+
+    spaces = []
+
+    for i in sample:
+        spaces.append(abs(random.normalvariate(0.15, 0.5)))
+
+    message = DroidChat()
+    message.data = ''.join(sample)
+    message.spaces = spaces
+
+    pub.publish(message)
+
+if __name__ == "__main__":
+
+    try:
+        rospy.init_node('droidchat')
+        pub = rospy.Publisher('speak', DroidChat, queue_size=10)
+        sub = rospy.Subscriber('emotion', UInt8, callback)
+
+        r = rospy.Rate(1)
+        while not rospy.is_shutdown():
+            r.sleep()
+
+
+    except KeyboardInterrupt:
+        pass
+
+    except rospy.ROSInterruptException as e:
+        rospy.logerr(e.message)

@@ -1,0 +1,47 @@
+<launch>
+  <!-- Map server -->
+  <!--<arg name="map_name" default="simple10x10"/>-->
+  <arg name="map_name" default="costa"/>
+
+  <arg name="real_barista" default="true" />
+
+  <arg name="map_file" default="$(find costa_robot)/map/generated/$(arg map_name).yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain"
+      name="laser_filter">
+  <rosparam command="load" file="$(find costa_robot)/param/laserscan_filter.yaml" />
+  </node>
+
+
+  <!-- AMCL -->
+  <arg name="custom_amcl_launch_file" default="$(find costa_robot)/launch/includes/amcl.launch.xml"/>
+  <arg name="initial_pose_x" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->
+  <arg name="initial_pose_y" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->
+  <arg name="initial_pose_a" default="0.0"/>
+  <include file="$(arg custom_amcl_launch_file)">
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+
+  <!-- Move base -->
+  <arg name="custom_param_file" default="$(find costa_robot)/param/r200_costmap_params.yaml"/>
+
+  <group if="$(arg real_barista)">
+    <include file="$(find costa_robot)/launch/includes/real_move_base.launch.xml">
+      <arg name="custom_param_file" value="$(arg custom_param_file)"/>
+    </include>
+  </group>
+
+  <group unless="$(arg real_barista)">
+    <include file="$(find costa_robot)/launch/includes/move_base.launch.xml">
+      <arg name="custom_param_file" value="$(arg custom_param_file)"/>
+    </include>
+  </group>
+
+
+
+
+</launch>
+

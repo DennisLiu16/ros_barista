@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <script type="text/javascript" src="eventemitter2.min.js"></script>
+  <script type="text/javascript" src="roslib.min.js"></script>
+</head>
+
+<style>
+body
+{
+  width: 100%;
+  margin: 0;
+  background: black;
+}
+#eyes
+{
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  zoom: 1.32;
+}
+</style>
+
+<body>
+
+<svg id="eyes" width="160mm" height="90mm" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<rect x="0" y="0" width="100%" height="100%" style="fill: black;"/>
+
+<defs>
+  <mask id="mymask1">
+    <rect x="0" y="0" width="150mm" height="150mm" style="fill: white;"/>
+    <rect id="happyLeftMask" x="33mm" y="100mm" rx="10mm" ry="10mm" width="44mm" height="60mm" fill="black"/>
+    <rect id="jadedLeftMask" x="33mm" y="-50mm" rx="0" ry="0" width="44mm" height="50mm" fill="black"/>
+    <rect id="angryLeftMask" x="104" y="-170" rx="0" ry="0" width="200" height="200" fill="black" transform="rotate(10 204 100)"/>
+    <rect id="sorryLeftMask" x="104" y="-170" rx="0" ry="0" width="200" height="200" fill="black" transform="rotate(-10 204 100)"/>
+  </mask>
+</defs>
+
+<defs>
+  <mask id="mymask2">
+    <rect x="0" y="0" width="150mm" height="150mm" style="fill: white;"/>
+    <rect id="happyRightMask" x="83mm" y="100mm" rx="10mm" ry="10mm" width="44mm" height="60mm" fill="black"/>
+    <rect id="jadedRightMask" x="83mm" y="-50mm" rx="0" ry="0" width="44mm" height="50mm" fill="black"/>
+    <rect id="angryRightMask" x="302" y="-170" rx="0" ry="0" width="200" height="200" fill="black" transform="rotate(-10 402 100)"/>
+    <rect id="sorryRightMask" x="302" y="-170" rx="0" ry="0" width="200" height="200" fill="black" transform="rotate(10 402 100)"/>
+</defs>
+
+<rect id="left" x="35mm" y="20mm" rx="10mm" ry="10mm" width="40mm" height="50mm" fill="#39e600" style="stroke-width:5;opacity:1.0" mask="url(#mymask1)"/>
+<rect id="right" x="85mm" y="20mm" rx="10mm" ry="10mm" width="40mm" height="50mm" fill="#39e600" style="stroke-width:5;opacity:1.0" mask="url(#mymask2)"/>
+
+<!-- Happy -->
+
+<animate id="happy" xlink:href="#happyLeftMask" attributeName="y" from="100mm" to="22mm" dur="0.2s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#happyRightMask" attributeName="y" from="100mm" to="22mm" dur="0.2s" begin="happy.begin" repeatCount="one" fill="freeze" />
+
+<animate id="happy_normal" xlink:href="#happyLeftMask" attributeName="y" from="22mm" to="100mm" dur="0.2s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#happyRightMask" attributeName="y" from="22mm" to="100mm" dur="0.2s" begin="happy_normal.begin" repeatCount="one" fill="freeze" />
+
+<!-- sorry -->
+
+<animate id="sorry" xlink:href="#sorryLeftMask" attributeName="y" from="-170" to="0" dur="0.3s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#sorryRightMask" attributeName="y" from="-170" to="0" dur="0.3s" begin="sorry.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left" attributeName="y" from="20mm" to="22.5mm" dur="0.3s" begin="sorry.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="20mm" to="22.5mm" dur="0.3s" begin="sorry.begin" repeatCount="one" fill="freeze" />
+
+<animate id="sorry_normal" xlink:href="#sorryLeftMask" attributeName="y" from="0" to="-170" dur="0.2s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#sorryRightMask" attributeName="y" from="0" to="-170" dur="0.2s" begin="sorry_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left" attributeName="y" from="22.5mm" to="20mm" dur="0.2s" begin="sorry_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="22.5mm" to="20mm" dur="0.2s" begin="sorry_normal.begin" repeatCount="one" fill="freeze" />
+
+<!-- angry -->
+
+<animate id="angry" xlink:href="#angryLeftMask" attributeName="y" from="-170" to="-10" dur="0.3s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#angryRightMask" attributeName="y" from="-170" to="-10" dur="0.3s" begin="angry.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left" attributeName="y" from="20mm" to="22.5mm" dur="0.3s" begin="angry.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="20mm" to="22.5mm" dur="0.3s" begin="angry.begin" repeatCount="one" fill="freeze" />
+
+<animate id="angry_normal" xlink:href="#angryLeftMask" attributeName="y" from="10" to="-170" dur="0.2s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#angryRightMask" attributeName="y" from="10" to="-170" dur="0.2s" begin="angry_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left" attributeName="y" from="22.5mm" to="20mm" dur="0.2s" begin="angry_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="22.5mm" to="20mm" dur="0.2s" begin="angry_normal.begin" repeatCount="one" fill="freeze" />
+
+<!-- jaded -->
+
+<animate id="jaded" xlink:href="#jadedLeftMask" attributeName="y" from="-50mm" to="10mm" dur="0.3s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#jadedRightMask" attributeName="y" from="-50mm" to="10mm" dur="0.3s" begin="jaded.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left" attributeName="y" from="20mm" to="22.5mm" dur="0.3s" begin="jaded.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="20mm" to="22.5mm" dur="0.3s" begin="jaded.begin" repeatCount="one" fill="freeze" />
+
+<animate id="jaded_normal" xlink:href="#jadedLeftMask" attributeName="y" from="10mm" to="-50mm" dur="0.2s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#jadedRightMask" attributeName="y" from="10mm" to="-50mm" dur="0.2s" begin="jaded_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left" attributeName="y" from="22.5mm" to="20mm" dur="0.1s" begin="jaded_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="22.5mm" to="20mm" dur="0.1s" begin="jaded_normal.begin" repeatCount="one" fill="freeze" />
+
+<!-- lookLeft -->
+
+<animate id="lookLeft" xlink:href="#left" attributeName="x" from="35mm" to="15mm" dur="0.1s" begin="indefinite" repeatCount="one" fill="freeze"/>
+<animate xlink:href="#left" attributeName="y" from="20mm" to="15mm" dur="0.1s" begin="lookLeft.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left" attributeName="width" from="40mm" to="50mm" dur="0.1s" begin="lookLeft.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left" attributeName="height" from="50mm" to="60mm" dur="0.1s" begin="lookLeft.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="x" from="85mm" to="75mm" dur="0.1s" begin="lookLeft.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="20mm" to="22.5mm" dur="0.1s" begin="lookLeft.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="width" from="40mm" to="35mm" dur="0.1s" begin="lookLeft.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="height" from="50mm" to="45mm" dur="0.1s" begin="lookLeft.begin" repeatCount="one" fill="freeze" />
+
+<animate id="lookLeft_normal" xlink:href="#left" attributeName="x" from="15mm" to="35mm" dur="0.1s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left" attributeName="y" from="15mm" to="20mm" dur="0.1s" begin="lookLeft_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left" attributeName="width" from="50mm" to="40mm" dur="0.1s" begin="lookLeft_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left" attributeName="height" from="60mm" to="50mm" dur="0.1s" begin="lookLeft_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="x" from="75mm" to="85mm" dur="0.1s" begin="lookLeft_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="22.5mm" to="20mm" dur="0.1s" begin="lookLeft_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="width" from="35mm" to="40mm" dur="0.1s" begin="lookLeft_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="height" from="45mm" to="50mm" dur="0.1s" begin="lookLeft_normal.begin" repeatCount="one" fill="freeze" />
+
+<!-- lookRight -->
+
+<animate id="lookRight" xlink:href="#left"  attributeName="x" from="35mm" to="50mm" dur="0.1s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="y" from="20mm" to="22.5mm" dur="0.1s" begin="lookRight.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="width" from="40mm" to="35mm" dur="0.1s" begin="lookRight.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="height" from="50mm" to="45mm" dur="0.1s" begin="lookRight.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="x" from="85mm" to="95mm" dur="0.1s" begin="lookRight.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="20mm" to="15mm" dur="0.1s" begin="lookRight.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="width" from="40mm" to="50mm" dur="0.1s" begin="lookRight.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="height" from="50mm" to="60mm" dur="0.1s" begin="lookRight.begin" repeatCount="one" fill="freeze" />
+
+<animate id="lookRight_normal" xlink:href="#left"  attributeName="x" from="45mm" to="35mm" dur="0.1s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="y" from="22.5mm" to="20mm" dur="0.1s" begin="lookRight_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="width" from="35mm" to="40mm" dur="0.1s" begin="lookRight_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="height" from="45mm" to="50mm" dur="0.1s" begin="lookRight_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="x" from="95mm" to="85mm" dur="0.1s" begin="lookRight_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="15mm" to="20mm" dur="0.1s" begin="lookRight_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="width" from="50mm" to="40mm" dur="0.1s" begin="lookRight_normal.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="height" from="60mm" to="50mm" dur="0.1s" begin="lookRight_normal.begin" repeatCount="one" fill="freeze" />
+
+<!-- lookUp -->
+
+<animate id="lookUp" xlink:href="#left"  attributeName="y" from="20mm" to="10mm" dur="0.1s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="20mm" to="10mm" dur="0.1s" begin="lookUp.begin" repeatCount="one" fill="freeze" />
+
+<animate id="lookUp_normal" xlink:href="#left"  attributeName="y" from="10mm" to="20mm" dur="0.1s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="10mm" to="20mm" dur="0.1s" begin="lookUp_normal.begin" repeatCount="one" fill="freeze" />
+
+<!-- lookDown -->
+
+<animate id="lookDown" xlink:href="#left"  attributeName="y" from="20mm" to="30mm" dur="0.1s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="20mm" to="30mm" dur="0.1s" begin="lookDown.begin" repeatCount="one" fill="freeze" />
+
+<animate id="lookDown_normal" xlink:href="#left"  attributeName="y" from="30mm" to="20mm" dur="0.1s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="30mm" to="20mm" dur="0.1s" begin="lookDown_normal.begin" repeatCount="one" fill="freeze" />
+
+<!-- blink  -->
+
+<animate id="blink" xlink:href="#left"  attributeName="x" from="35mm" to="-50" dur="0.1s" begin="indefinite" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="y" from="20mm" to="50mm" dur="0.05s" begin="blink.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="width" from="40mm" to="100%" dur="0.05s" begin="blink.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="height" from="50mm" to="5mm" dur="0.05s" begin="blink.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="20mm" to="50mm" dur="0.05s" begin="blink.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="width" from="40mm" to="100%" dur="0.05s" begin="blink.begin" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="height" from="50mm" to="5mm" dur="0.05s" begin="blink.begin" repeatCount="one" fill="freeze" />
+
+<animate xlink:href="#left"  attributeName="x" from="-50" to="35mm" dur="0.1s" begin="blink.end+0.2s" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="y" from="50mm" to="20mm" dur="0.1s" begin="blink.end+0.2s" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="width" from="100%" to="40mm" dur="0.1s" begin="blink.end+0.2s" repeatCount="one" fill="freeze" />
+<animate xlink:href="#left"  attributeName="height" from="5mm" to="50mm" dur="0.1s" begin="blink.end+0.2s" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="y" from="50mm" to="20mm" dur="0.1s" begin="blink.end+0.2s" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="width" from="100%" to="40mm" dur="0.1s" begin="blink.end+0.2s" repeatCount="one" fill="freeze" />
+<animate xlink:href="#right" attributeName="height" from="5mm" to="50mm" dur="0.1s" begin="blink.end+0.2s" repeatCount="one" fill="freeze" />
+
+</svg>
+
+<script type="text/javascript" type="text/javascript">
+
+  var ros = new ROSLIB.Ros(
+  {
+    url : 'ws://localhost:9090'
+  });
+
+  ros.on('connection', function()
+  {
+    console.log('Connected to websocket server.');
+  });
+
+  ros.on('error', function(error)
+  {
+    console.log('Error connecting to websocket server: ', error);
+    setTimeout(function()
+    {
+      location.reload();
+    }, 1000)
+  });
+
+  ros.on('close', function()
+  {
+    console.log('Connection to websocket server closed.');
+    setTimeout(function()
+    {
+      location.reload();
+    }, 1000)
+  });
+
+  // Subscribing to a Topic
+  // ----------------------
+
+  var listener = new ROSLIB.Topic(
+  {
+    ros : ros,
+    name : '/droid/emotion',
+    messageType : 'std_msgs/UInt8'
+  });
+
+  var last = "normal";
+
+  listener.subscribe(function(message)
+  {
+    console.log(message);
+    var emotion = 'normal';
+
+    switch (message.data)
+    {
+      case 0:
+          emotion = 'normal'
+          break;
+      case 1:
+          emotion = 'happy'
+          break;
+      case 2:
+          emotion = 'sorry'
+          break;
+      case 3:
+          emotion = 'angry'
+          break;
+      case 4:
+          emotion = 'jaded'
+          break;
+      case 5:
+          emotion = 'lookLeft'
+          break;
+      case 6:
+          emotion = 'lookRight'
+          break;
+      case 7:
+          emotion = 'lookUp'
+          break;
+      case 8:
+          emotion = 'lookDown'
+          break;
+      case 9:
+          emotion = 'blink'
+          break;
+    }
+
+    if (emotion === 'normal' && last !== 'normal')
+    {
+      console.log(last + '_normal');
+      animation = document.getElementById(last + '_normal');
+      animation.beginElement();
+    }
+    else if (emotion === 'normal' && last === 'normal')
+    {
+
+    }
+    else
+    {
+      last = emotion;
+      console.log(last)
+      animation = document.getElementById(emotion);
+      animation.beginElement();
+    }
+  });
+
+</script>
+
+</body>
+</html>

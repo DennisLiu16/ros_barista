@@ -1,0 +1,102 @@
+1)
+
+rostopic info /tf
+Type: tf2_msgs/TFMessage
+
+Publishers:
+ * /robot_state_publisher (http://barista:44968/)
+ * /mobile_base_nodelet_manager (http://barista:37374/)
+
+Subscribers: None
+
+
+rostopic hz /tf
+subscribed to [/tf]
+average rate: 32.710
+
+
+
+2) 
+
+rostopic info /scan
+Type: sensor_msgs/LaserScan
+
+Publishers:
+ * /urg_node (http://barista:36957/)
+
+Subscribers: None
+
+rostopic hz /scan
+subscribed to [/scan]
+average rate: 10.372
+
+rostopic echo -n1 /scan
+header:
+  seq: 831
+  stamp:
+    secs: 1549298524
+    nsecs: 924566788
+  frame_id: "laser"
+angle_min: -2.35619449615
+angle_max: 2.09234976768
+angle_increment: 0.00613592332229
+time_increment: 9.76562732831e-05
+scan_time: 0.10000000149
+range_min: 0.019999999553
+range_max: 5.59999990463
+ranges: [.......]
+intensities: [.......]
+
+
+3)
+
+rostopic info /cmd_vel_mux/input/teleop
+Type: geometry_msgs/Twist
+
+Publishers: None
+
+Subscribers:
+ * /mobile_base_nodelet_manager (http://barista:37374/)
+ 
+ 
+4)
+
+rostopic info /odom
+Type: nav_msgs/Odometry
+
+Publishers:
+ * /mobile_base_nodelet_manager (http://barista:37374/)
+
+Subscribers: None
+
+rostopic echo -n1 /odom
+header:
+  seq: 7910
+  stamp:
+    secs: 1549298686
+    nsecs: 745418521
+  frame_id: "odom"
+child_frame_id: "base_footprint"
+pose:
+  pose:
+    position:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+  covariance: [....]
+twist:
+  twist:
+    linear:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    angular:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+  covariance: [....]

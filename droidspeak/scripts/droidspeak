@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+import rospy
+import sys
+import pygame
+import time
+import os
+import rospkg
+import random
+
+from droidspeak.msg import *
+
+rospack = rospkg.RosPack()
+pygame.init()
+
+letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+sounds = {}
+
+for letter in letters:
+    package_path = os.path.join(rospack.get_path('droidspeak'), 'sounds')
+    letter_path = os.path.join(package_path, letter + '.wav')
+    sounds[letter] = pygame.mixer.Sound(letter_path)
+
+def callback(data):
+    for i in range(0, len(data.data)):
+        if data.data[i] in sounds:
+            sounds[data.data[i]].play()
+        time.sleep(data.spaces[i])
+
+try:
+    rospy.init_node('droidspeak')
+    rospy.Subscriber("speak", DroidChat, callback)
+    rospy.spin()
+except KeyboardInterrupt:
+    pass
+
+except rospy.ROSInterruptException as e:
+    rospy.logerr(e.message)

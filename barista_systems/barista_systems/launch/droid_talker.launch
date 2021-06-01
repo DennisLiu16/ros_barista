@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+
+    <node pkg="droidspeak" type="droidspeak" name="speak"/>
+
+    <node name="droid_talker_node"
+          pkg="barista_systems"
+          type="droid_talker.py"
+          respawn="false"
+          output="screen">
+    </node>
+
+</launch>
