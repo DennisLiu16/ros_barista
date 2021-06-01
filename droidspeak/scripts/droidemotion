@@ -1,0 +1,124 @@
+#!/usr/bin/env python
+
+import rospy
+import sys
+import pygame
+import time
+import os
+import rospkg
+import random
+import webbrowser
+from multiprocessing import Queue
+import threading
+import subprocess
+import signal
+
+from std_msgs.msg import UInt8
+from droidspeak.srv import *
+
+import SimpleHTTPServer
+import SocketServer
+
+queue = Queue()
+
+class WebServer(threading.Thread):
+
+    def __init__(self):
+        super(WebServer, self).__init__()
+        self.running = True
+
+    def run(self):
+        PORT = 8000
+        Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
+        SocketServer.TCPServer.allow_reuse_address = True
+        httpd = SocketServer.TCPServer(('', PORT), Handler)
+        httpd.timeout = 1
+
+        p = subprocess.Popen('firefox -url http://localhost:8000 & xdotool search --sync --onlyvisible --class "Firefox" windowactivate key F11', shell=True)
+
+        while self.running:
+            httpd.handle_request()
+
+        httpd.server_close()
+        subprocess.call([ "killall", "-9", "firefox" ])
+
+    def stop(self):
+        self.running = False
+
+
+def handle_emotion(req):
+    queue.put((req.emotion, req.duration))
+    return []
+
+
+def on_shutdown():
+    webserver.stop()
+
+
+if __name__ == "__main__":
+
+    try:
+        rospy.init_node('emotion')
+        rospy.on_shutdown(on_shutdown)
+
+        srv = rospy.Service('select_emotion', DroidEmotion, handle_emotion)
+        pub = rospy.Publisher('emotion', UInt8, queue_size=10)
+
+        rospack = rospkg.RosPack()
+        path = os.path.join(rospack.get_path('droidspeak'), 'site')
+        os.chdir(path)
+
+        webserver = WebServer()
+        webserver.start()
+
+        current_emotion = DroidEmotionRequest.NORMAL
+        empty_counter = 0
+        r = rospy.Rate(10)
+        while not rospy.is_shutdown():
+
+            if not queue.empty():
+                empty_counter = 0
+
+                element = queue.get()
+                next_emotion = element[0]
+                next_duration = element[1].to_sec()
+
+                if next_emotion == DroidEmotionRequest.BLINK:
+                    pub.publish(DroidEmotionRequest.BLINK)
+                    time.sleep(0.5)
+
+                else:
+                    if current_emotion != DroidEmotionRequest.NORMAL and next_emotion != DroidEmotionRequest.NORMAL:
+                        pub.publish(DroidEmotionRequest.NORMAL)
+                        time.sleep(0.5)
+
+                    pub.publish(next_emotion)
+                    time.sleep(0.5)
+
+                    current_emotion = next_emotion
+
+                    if next_duration != 0:
+                        time.sleep(next_duration)
+                        pub.publish(DroidEmotionRequest.NORMAL)
+                        time.sleep(0.5)
+                        current_emotion = DroidEmotionRequest.NORMAL
+
+            else:
+                empty_counter += 1
+
+                if empty_counter == 35:
+                    emotions = [DroidEmotionRequest.HAPPY, DroidEmotionRequest.LOOK_UP, DroidEmotionRequest.LOOK_RIGHT, DroidEmotionRequest.LOOK_LEFT, DroidEmotionRequest.BLINK]
+                    random_emotion = random.choice(emotions)
+                    queue.put((random_emotion, rospy.Duration.from_sec(abs(random.normalvariate(3, 1)))))
+                    empty_counter = 0
+
+            r.sleep()
+
+    except (KeyboardInterrupt, SystemExit):
+        pass
+
+    except rospy.ROSInterruptException as e:
+        rospy.logerr(e.message)
+
+    finally:
+        webserver.join()

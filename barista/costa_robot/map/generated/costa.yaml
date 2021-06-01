@@ -1,0 +1,7 @@
+image: /home/barista/catkin_ws/src/barista/costa_robot/map/generated/costa.pgm
+resolution: 0.005000
+origin: [-11.560000, -11.560000, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+

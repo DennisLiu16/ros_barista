@@ -1,0 +1,15 @@
+<launch>
+
+
+  <!-- Save Current Map -->
+  <!--<arg name="map_name" default="simple10x10"/>-->
+  <!--<arg name="map_name" default="casa"/>-->
+  <!--<arg name="map_name" default="costa"/>-->
+  <arg name="map_name" default="costafull"/>
+
+  <node pkg="map_server" type="map_saver"
+      name="map_saver_node"
+      args="-f $(find costa_robot)/map/generated/$(arg map_name)">
+  </node>
+
+</launch>

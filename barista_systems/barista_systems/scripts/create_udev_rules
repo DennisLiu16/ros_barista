@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo ""
+echo "Please disconnect Hokuyo laser USB and ARDUION"
+echo ""
+
+sudo usermod -a -G dialout $USER
+
+sudo cp `rospack find barista_systems`/47-hokuyo.rules /etc/udev/rules.d
+sudo cp `rospack find barista_systems`/48-arduino.rules /etc/udev/rules.d
+
+
+echo ""
+echo "Restarting udev"
+echo ""
+sudo service udev reload
+sudo service udev restart
+
+echo "Now reconect"

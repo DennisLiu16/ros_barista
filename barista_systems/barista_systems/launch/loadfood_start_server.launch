@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <node name="loadfood_server_node" pkg="barista_systems" type="loadfood_start_server.py"
+        respawn="false" output="screen">
+  </node>
+
+</launch>

@@ -1,0 +1,13 @@
+<launch>
+
+  <group ns="droid">
+    <node pkg="droidspeak" type="droidemotion" name="emotion"/>
+    <node pkg="droidspeak" type="droidchat" name="chat"/>
+    <node pkg="droidspeak" type="droidspeak" name="speak"/>
+  </group>
+
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" >
+     <arg name="port" value="9090"/>
+  </include>
+
+</launch>
