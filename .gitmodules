@@ -1,0 +1,15 @@
+[submodule "barista"]
+	path = barista
+	url = https://bitbucket.org/theconstructcore/barista/src/master/
+[submodule "barista_systems"]
+	path = barista_systems
+	url = https://bitbucket.org/theconstructcore/barista_systems/src/master/
+[submodule "barista_web_server"]
+	path = barista_web_server
+	url = https://bitbucket.org/theconstructcore/barista_web_server/src/master/
+[submodule "droidspeak"]
+	path = droidspeak
+	url = https://gitlab.com/easymov/droidspeak
+[submodule "spawn_robot_tools"]
+	path = spawn_robot_tools
+	url = https://bitbucket.org/theconstructcore/spawn_robot_tools/src/master/
